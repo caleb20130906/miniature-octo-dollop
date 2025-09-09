@@ -1,21 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-TW">
 <head>
-  <meta charset="utf-8">
-  <title>登入系統</title>
-  <!-- 載入 Firebase SDK -->
+  <meta charset="UTF-8">
+  <title>會員登入系統</title>
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 340px;
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .login-btn {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .login-btn:hover {
+      background-color: #45a049;
+    }
+    .register-btn {
+      background-color: #2196F3;
+      color: white;
+    }
+    .register-btn:hover {
+      background-color: #1976D2;
+    }
+    .google-btn {
+      background-color: #DB4437;
+      color: white;
+    }
+    .google-btn:hover {
+      background-color: #C1351D;
+    }
+  </style>
 </head>
 <body>
-  <h2>登入系統</h2>
-  <input type="email" id="email" placeholder="Email"><br>
-  <input type="password" id="password" placeholder="密碼"><br>
-  <button onclick="login()">登入</button>
-  <button onclick="register()">註冊</button>
+  <div class="container">
+    <h2>🔑 會員登入</h2>
+    <input type="email" id="email" placeholder="輸入 Email">
+    <input type="password" id="password" placeholder="輸入密碼">
+    <button class="login-btn" onclick="login()">登入</button>
+    <button class="register-btn" onclick="register()">註冊</button>
+    <hr>
+    <button class="google-btn" onclick="googleLogin()">使用 Google 登入</button>
+  </div>
 
   <script>
-    // 🔧 這裡貼上您 Firebase 專案的設定
+    // 🔧 換成您的 Firebase 專案設定
     const firebaseConfig = {
       apiKey: "AIzaSyCLmEiFvmVFpScfvoZpzm7mjmbkg7uRqcA",
       authDomain: "my-login-site-2b4e9.firebaseapp.com",
@@ -25,7 +90,6 @@
       appId: "1:241008872993:web:bfb2780a8afdf09ead6d0"
     };
 
-    // 初始化 Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
@@ -34,10 +98,9 @@
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       auth.signInWithEmailAndPassword(email, password)
-        .then(userCredential => {
+        .then(() => {
           alert("登入成功！");
-          // 👉 登入成功後跳轉 Google Sites 隱藏頁
-          window.location.href = "https://sites.google.com/view/your-site/secret-page";
+          window.location.href = "https://sites.google.com/view/2clhvope39l1nvx/首頁";
         })
         .catch(error => alert("登入失敗：" + error.message));
     }
@@ -47,10 +110,19 @@
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       auth.createUserWithEmailAndPassword(email, password)
-        .then(userCredential => {
-          alert("註冊成功！");
-        })
+        .then(() => alert("註冊成功！"))
         .catch(error => alert("註冊失敗：" + error.message));
+    }
+
+    // Google 登入
+    function googleLogin() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider)
+        .then(() => {
+          alert("Google 登入成功！");
+          window.location.href = "https://sites.google.com/view/2clhvope39l1nvx/首頁";
+        })
+        .catch(error => alert("Google 登入失敗：" + error.message));
     }
   </script>
 </body>
